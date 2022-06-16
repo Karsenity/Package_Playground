@@ -1,0 +1,9 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: buckets
+provisioner: gcs.csi.ofek.dev
+volumeBindingMode: Immediate
+allowVolumeExpansion: true
+# Any persistent disk type can be specified in the type parameter
+    # (for example pd-ssd, pd-standard or pd-balanced).
