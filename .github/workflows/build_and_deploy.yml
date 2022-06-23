@@ -1,0 +1,41 @@
+name: Build and Deploy Kubernetes cluster running Milvus
+on:
+  workflow_call:
+    inputs:
+      env-name:
+        required: true
+        type: string
+    secrets:
+      GOOGLE_CREDENTIALS:
+        required: true
+
+jobs:
+
+  terraform-apply-and-helm-install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Go to terraform directory
+        run: cd ./src/terraform
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.GOOGLE_CREDENTIALS }}
+      
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -input=false -var-file=./src/terraform/environment/${{ env-name }}.tfvars -out=tf.plan
+        continue-on-error: true
+      
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+        
+      - name: Terraform Apply
+        run: terraform apply -auto-approve -input=false tf.plan
