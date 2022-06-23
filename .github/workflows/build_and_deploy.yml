@@ -30,8 +30,12 @@ jobs:
       - name: Terraform Plan
         working-directory: ${{ env.working-dir }}
         id: plan
-        run: terraform plan -var-file=environment/${{ inputs.env-name }}.tfvars -out=tf.plan
-        
+        run: |
+          terraform workspace select dev
+          terraform plan -var-file=environment/${{ inputs.env-name }}.tfvars -out=tf.plan
+          
       - name: Terraform Apply
         working-directory: ${{ env.working-dir }}
-        run: terraform apply -auto-approve -input=false tf.plan
+        run: |
+          terraform workspace select dev
+          terraform apply -auto-approve -input=false tf.plan
