@@ -15,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       working-dir: ./src/terraform
+      GOOGLE_BACKEND_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+      GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
     steps:
       - uses: actions/checkout@v2
       
@@ -24,16 +26,12 @@ jobs:
       - name: Terraform Init
         working-directory: ${{ env.working-dir }}
         run: terraform init
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         
       - name: Terraform Plan
         working-directory: ${{ env.working-dir }}
         id: plan
         run: terraform plan -no-color -input=false -var-file=environment/${{ inputs.env-name }}.tfvars -out=tf.plan
         continue-on-error: true
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
       
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
@@ -42,5 +40,3 @@ jobs:
       - name: Terraform Apply
         working-directory: ${{ env.working-dir }}
         run: terraform apply -auto-approve -input=false tf.plan
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
