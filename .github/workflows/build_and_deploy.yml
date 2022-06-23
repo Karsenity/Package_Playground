@@ -13,32 +13,34 @@ jobs:
 
   terraform-apply-and-helm-install:
     runs-on: ubuntu-latest
+    env:
+      working-dir: ./src/terraform
     steps:
       - uses: actions/checkout@v2
       
-      - name: Go to terraform directory
-        run: |
-          cd ./src/terraform
-          pwd
-          ls
-      
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
-        with:
-          cli_config_credentials_token: ${{ secrets.GOOGLE_CREDENTIALS }}
       
       - name: Terraform Init
-        id: init
+        working-directory: ${{ env.working-dir }}
         run: terraform init
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         
       - name: Terraform Plan
+        working-directory: ${{ env.working-dir }}
         id: plan
         run: terraform plan -no-color -input=false -var-file=environment/${{ inputs.env-name }}.tfvars -out=tf.plan
         continue-on-error: true
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
       
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
         
       - name: Terraform Apply
+        working-directory: ${{ env.working-dir }}
         run: terraform apply -auto-approve -input=false tf.plan
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
