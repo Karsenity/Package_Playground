@@ -4,3 +4,4 @@
 /test-chart/
 /volumes/
 /src/terraform/.terraform/
+/docker-compose.yml
