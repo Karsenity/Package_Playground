@@ -8,7 +8,7 @@ jobs:
   BuildDev:
     name: Deploy / Dev
     if: github.event_name == 'push' && github.event.ref != 'refs/heads/main' && github.event.ref != 'refs/heads/production'
-    uses: ./.github/workflows/build.yml
+    uses: ./.github/workflows/build_and_deploy.yml
     with:
       env-name: dev
     secrets: inherit
@@ -16,7 +16,7 @@ jobs:
   BuildStage:
     name: Deploy / Stage
     if: github.event.ref == 'refs/heads/main'
-    uses: ./.github/workflows/build.yml
+    uses: ./.github/workflows/build_and_deploy.yml
     with:
       env-name: stage
     secrets: inherit
@@ -24,7 +24,7 @@ jobs:
   BuildProd:
     name: Deploy / Prod
     if: github.event.ref == 'refs/heads/production'
-    uses: ./.github/workflows/build.yml
+    uses: ./.github/workflows/build_and_deploy.yml
     with:
       env-name: prod
     secrets: inherit
