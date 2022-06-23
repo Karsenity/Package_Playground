@@ -8,5 +8,5 @@ fmt = "\n=== {:30} ===\n"
 
 
 print(fmt.format("start connecting to Milvus"))
-connections.connect("default", host="35.243.139.174", port="19530")
+connections.connect("default", host="35.227.32.120", port="19530")
 print("\nSuccess!")

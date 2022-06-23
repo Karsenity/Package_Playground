@@ -1,2 +1,6 @@
 # Project exclude paths
 /milvus_test/
+/src/terraform/tf.plan
+/test-chart/
+/volumes/
+/src/terraform/.terraform/

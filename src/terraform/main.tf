@@ -5,13 +5,14 @@ terraform {
       version = "3.5.0"
     }
   }
+  backend "gcs" {
+    bucket = "al-tf-states"
+    prefix = "milvus-cluster"
+  }
 }
 
 provider "google" {
-  credentials = file("milvus-testing-e9b82122e656.json")
-
-  project = "milvus-testing"
-  region  = "us-east1"
-  zone    = "us-east1-b"
+  project = var.PROJECT_ID
+  region  = var.REGION
+  zone    = var.ZONE
 }
-

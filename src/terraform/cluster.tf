@@ -5,7 +5,7 @@
 
 resource "google_container_cluster" "kubernetes_cluster" {
   name     = var.CLUSTER_NAME
-  location = var.REGION
+  location = var.ZONE
   network = google_compute_network.vpc_network.name
   subnetwork = google_compute_subnetwork.network-with-private-secondary-ip-ranges.name
   default_max_pods_per_node = var.MAX_PODS_PER_NODE
@@ -24,7 +24,7 @@ resource "google_container_cluster" "kubernetes_cluster" {
 
 resource "google_container_node_pool" "kubernetes_node_pool" {
   name       = var.NODE_POOL_NAME
-  location   = var.REGION
+  location   = var.ZONE
   cluster    = google_container_cluster.kubernetes_cluster.name
   node_count = var.NODE_POOL_COUNT
   version = var.NODE_POOL_VERSION

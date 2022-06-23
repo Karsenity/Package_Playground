@@ -24,7 +24,7 @@ num_entities, dim = 3000, 8
 #
 # Note: the `using` parameter of the following methods is default to "default".
 print(fmt.format("start connecting to Milvus"))
-connections.connect("default", host="35.185.90.96", port="19530")
+connections.connect("default", host="35.227.32.120", port="19530")
 
 has = utility.has_collection("hello_milvus")
 print(f"Does collection hello_milvus exist in Milvus: {has}")

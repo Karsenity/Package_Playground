@@ -1,3 +1,8 @@
+variable "PROJECT_ID" {
+  type = string
+  description = "The ID for the project being used on Google Cloud"
+}
+
 variable "VPC_NAME" {
   type        = string
   description = "Name of the VPC network"
@@ -13,6 +18,12 @@ variable "REGION" {
   type = string
   description = "Default region that everything will be created in"
   default = "us-east1"
+}
+
+variable "ZONE" {
+  type = string
+  description = "Default zone for things to be created in"
+  default = "us-central1-a"
 }
 
 variable "NODE_POOL_NAME" {
