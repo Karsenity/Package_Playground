@@ -63,6 +63,7 @@ jobs:
         run: |
           terraform workspace select ${{ inputs.env-name }}
           export CLUSTER_NAME='terraform output cluster_name'
+          echo $CLUSTER_NAME
           gcloud container clusters get-credentials $CLUSTER_NAME --zone="us-east1-b"
           helm repo add milvus https://milvus-io.github.io/milvus-helm/
           helm repo update
