@@ -1,30 +1,33 @@
 name: Deploy Milvus
 on:
+  - push
   - workflow_dispatch
 
 jobs:
 
-  BuildDev:
-    name: Deploy / Dev
-    if: github.event_name == 'push' && github.event.ref != 'refs/heads/main' && github.event.ref != 'refs/heads/production'
+  Build:
+    name: Deploy / ${{ needs.FindEnvironment.outputs.env_name }}
+    needs: FindEnvironment
     uses: ./.github/workflows/build_and_deploy.yml
     with:
-      env-name: dev
+      env-name: ${{ needs.FindEnvironment.outputs.env_name }}
     secrets: inherit
-
-  BuildStage:
-    name: Deploy / Stage
-    if: github.event.ref == 'refs/heads/main'
-    uses: ./.github/workflows/build_and_deploy.yml
-    with:
-      env-name: stage
-    secrets: inherit
-
-  BuildProd:
-    name: Deploy / Prod
-    if: github.event.ref == 'refs/heads/production'
-    uses: ./.github/workflows/build_and_deploy.yml
-    with:
-      env-name: prod
-    secrets: inherit
+    
+  FindEnvironment:
+    name: Finding Environment
+    runs-on: ubuntu-latest
+    outputs:
+      env_name: ${{ steps.find_name.outputs.env_name }}
+    steps:
+      - id: find_name
+        run: |
+          if [[ ${{ github.event.ref }} == refs/heads/main ]]
+          then
+            echo "::set-output name=env_name::stage"
+          elif [[ ${{ github.event.ref }} == refs/heads/production ]]
+          then
+            echo "::set-output name=env_name::prod"
+          else
+            echo "::set-output name=env_name::dev"
+          fi  
 
