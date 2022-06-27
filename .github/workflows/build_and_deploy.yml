@@ -39,3 +39,25 @@ jobs:
         run: |
           terraform workspace select dev
           terraform apply -auto-approve -input=false tf.plan
+          
+      - name: Install Gcloud for Milvus
+        run: |
+          echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+          curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+          sudo apt-get update && sudo apt-get install google-cloud-cli
+    
+      - name: Install Helm for Milvus
+        run: |
+          curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+          sudo apt-get install apt-transport-https --yes
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+          sudo apt-get update
+          sudo apt-get install helm
+      
+      - name: Run Milvus
+        run: |
+          gcloud container clusters get-credentials ${CLUSTER_NAME}
+          helm repo add milvus https://milvus-io.github.io/milvus-helm/
+          helm repo update
+          helm install milvus_cluster milvus/milvus -f helm_values.yaml
+          
