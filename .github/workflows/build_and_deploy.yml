@@ -63,7 +63,6 @@ jobs:
         run: |
           terraform workspace select dev
           export CLUSTER_NAME=$(terraform output cluster_name)
-          gcloud auth login --cred-file=${{ secrets.GOOGLE_CREDENTIALS }}
           gcloud container clusters get-credentials milvus-dev-cluster
           helm repo add milvus https://milvus-io.github.io/milvus-helm/
           helm repo update
