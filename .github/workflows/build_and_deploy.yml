@@ -61,3 +61,4 @@ jobs:
           helm repo update
           helm install $(terraform output cluster_name) milvus/milvus -f helm_values.yaml
           
+          
