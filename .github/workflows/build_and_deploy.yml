@@ -59,7 +59,8 @@ jobs:
         working-directory: ${{ env.working-dir }}
         run: |
           terraform workspace select dev
-          gcloud container clusters get-credentials $(terraform output cluster_name)
+          export CLUSTER_NAME=$(terraform output cluster_name)
+          gcloud container clusters get-credentials ${CLUSTER_NAME}
           helm repo add milvus https://milvus-io.github.io/milvus-helm/
           helm repo update
           helm install milvus_deploy milvus/milvus -f helm_values.yaml
