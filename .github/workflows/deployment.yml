@@ -1,7 +1,11 @@
 name: Deploy Milvus
 on:
-  - push
-  - workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      TfApply:
+        description: Rebuild Cluster (Terraform Apply)
+        required: true
+        default: false
 
 jobs:
 
