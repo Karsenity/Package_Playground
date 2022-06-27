@@ -40,8 +40,14 @@ jobs:
 #           terraform workspace select dev
 #           terraform apply -auto-approve -input=false tf.plan
           
-      - name: Install Google Cloud
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      - name: Gcloud Authorization
+        id: 'auth'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credential_json: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+      - name: Gcloud Setup
+        uses: 'google-github-actions/setup-gcloud@v0'
     
       - name: Install Helm for Milvus
         working-directory: ${{ env.working-dir }}
