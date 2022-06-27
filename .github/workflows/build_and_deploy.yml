@@ -64,7 +64,7 @@ jobs:
         working-directory: ${{ env.working-dir }}
         run: |
           terraform workspace select ${{ inputs.env-name }}
-          gcloud container clusters get-credentials $(terraform output cluster_name) --zone="us-east1-b"
+          gcloud container clusters get-credentials $(terraform output --raw cluster_name) --zone="us-east1-b"
           helm repo add milvus https://milvus-io.github.io/milvus-helm/
           helm repo update
           helm install milvus-deploy milvus/milvus -f helm_values.yaml
