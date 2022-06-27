@@ -34,11 +34,11 @@ jobs:
           terraform workspace select dev
           terraform plan -var-file=tfvars/${{ inputs.env-name }}.tfvars -out=tf.plan
           
-#       - name: Terraform Apply
-#         working-directory: ${{ env.working-dir }}
-#         run: |
-#           terraform workspace select dev
-#           terraform apply -auto-approve -input=false tf.plan
+      - name: Terraform Apply
+        working-directory: ${{ env.working-dir }}
+        run: |
+          terraform workspace select dev
+          terraform apply -auto-approve -input=false tf.plan
           
 #       - name: Install Gcloud for Milvus
 #         run: |
