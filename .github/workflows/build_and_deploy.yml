@@ -56,8 +56,9 @@ jobs:
       
       - name: Run Milvus
         run: |
-          gcloud container clusters get-credentials ${CLUSTER_NAME}
+          gcloud container clusters get-credentials $(terraform output cluster_name)
           helm repo add milvus https://milvus-io.github.io/milvus-helm/
           helm repo update
-          helm install $(terraform output cluster_name) milvus/milvus -f helm_values.yaml
+          helm install milvus_deploy milvus/milvus -f helm_values.yaml
+          
           
