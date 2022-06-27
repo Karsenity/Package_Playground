@@ -1,6 +1,5 @@
 name: Push to GCR GitHub Action
 on:
-  - push
   - workflow_dispatch
 
 jobs:
