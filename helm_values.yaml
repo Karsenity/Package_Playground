@@ -1,0 +1,18 @@
+service:
+  type: LoadBalancer
+
+minio:
+  persistence:
+    size: 10Gi
+
+pulsar:
+  bookkeeper:
+    volumes:
+      journal:
+        size: 2Gi
+      ledgers:
+        size: 2Gi
+
+etcd:
+  persistence:
+    size: 1Gi
