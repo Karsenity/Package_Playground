@@ -1,4 +1,4 @@
-name: Push to GCR GitHub Action
+name: Deploy Milvus
 on:
   - workflow_dispatch
 
