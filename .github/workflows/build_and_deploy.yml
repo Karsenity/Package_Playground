@@ -32,7 +32,7 @@ jobs:
         id: plan
         run: |
           terraform workspace select dev
-          terraform plan -var-file=environment/${{ inputs.env-name }}.tfvars -out=tf.plan
+          terraform plan -var-file=tfvars/${{ inputs.env-name }}.tfvars -out=tf.plan
           
 #       - name: Terraform Apply
 #         working-directory: ${{ env.working-dir }}
